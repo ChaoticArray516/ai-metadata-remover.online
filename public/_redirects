@@ -1,0 +1,4 @@
+# Cloudflare Pages redirects (D1 deploy closeout)
+# Enforce 301 trailing-slash canonical redirects (Pages default is 308).
+/pricing /pricing/ 301
+/remove-metadata-from-photo /remove-metadata-from-photo/ 301
