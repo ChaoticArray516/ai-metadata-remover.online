@@ -1,0 +1,21 @@
+---
+import { LINKS } from '../../data/links';
+---
+
+<section>
+  <h2>What happens to a photo after you clean it</h2>
+  <p>The pixels stay identical. The surrounding data does not.</p>
+  <p>
+    Cleaning cuts whole metadata segments and copies everything else byte for byte, so the image looks
+    and prints exactly the same. What changes is the file's declaration: device, time, place, software
+    and any stored text are gone. The before-and-after table in your result lists each segment with its
+    fate, and the report re-reads the output to confirm it. You can then
+    <a href={LINKS.pricing.href}>see the free and paid plans</a> if you also need video or PDF later.
+  </p>
+  <p>
+    If a photo shows no fields at all, treat that as absence of evidence, not as a verdict. Nothing
+    found does not mean the file is not AI. Midjourney, for example, does not write C2PA or IPTC
+    metadata as of early 2026, so its pictures usually have nothing to find; that is its writing
+    behavior, not a detection failure, and removing metadata cannot change what pixels tell a detector.
+  </p>
+</section>

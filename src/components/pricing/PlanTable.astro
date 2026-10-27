@@ -1,0 +1,23 @@
+---
+import { PLAN_TABLE, PRICING_ANCHOR } from '../../data/plans';
+---
+
+<div class="table-wrap">
+  <table>
+    <thead>
+      <tr>
+        {PLAN_TABLE.columns.map((column) => <th>{column}</th>)}
+      </tr>
+    </thead>
+    <tbody>
+      {
+        PLAN_TABLE.rows.map((row) => (
+          <tr>
+            {row.map((cell, index) => (index === 0 ? <th>{cell}</th> : <td>{cell}</td>))}
+          </tr>
+        ))
+      }
+    </tbody>
+  </table>
+</div>
+<p class="pricing-anchor"><strong>{PRICING_ANCHOR}</strong></p>

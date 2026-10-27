@@ -1,0 +1,26 @@
+# AI Metadata Remover — full capability notes
+
+Site: https://ai-metadata-remover.online/
+
+## What the tool does
+
+- Reads and removes metadata segments from JPEG, PNG, WebP and HEIC files, entirely in the browser.
+- JPEG: removes APP1 (EXIF/XMP), APP13 (IPTC) and APP11 (JUMBF) segments; keeps the ICC color profile and all image data after SOS byte-identical.
+- PNG: removes tEXt, iTXt, zTXt and eXIf chunks; keeps iCCP and IDAT untouched.
+- WebP: removes EXIF and XMP chunks and clears the matching VP8X flag bits; keeps ICC, animation and image chunks.
+- HEIC: removes EXIF/XMP entries and top-level uuid boxes; recalculates ancestor box sizes. HEIC XMP display is marked as not checked until real iPhone samples are verified.
+- Shows a before-and-after field comparison and generates a self-contained cleaning report (HTML and JSON). Reports never list the original values of removed fields.
+
+## What the tool does not do
+
+- No invisible watermark detection or removal (SynthID and similar live in pixels, not metadata).
+- No change to labels or badges applied by a platform after upload.
+- No claim that a cleaned file will not be detected as AI by any detector. Nothing found does not mean the file is not AI.
+- No video or PDF cleaning yet; these are listed as coming soon on the pricing page.
+- No accounts, no uploads, no server-side file retention for photos.
+
+## Pages
+
+- / — general metadata remover (keyword: metadata remover).
+- /remove-metadata-from-photo/ — phone photo cleaning (keyword: remove metadata from photo).
+- /pricing/ — free tier and planned paid plans; only the free $0 offer is machine-readable.

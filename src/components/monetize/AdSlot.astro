@@ -1,0 +1,10 @@
+---
+interface Props {
+  pageId: 'home' | 'photo';
+  slotId: string;
+}
+
+const { pageId, slotId } = Astro.props;
+---
+
+<div id="after-result" class="ad-slot" data-ad-slot={slotId} data-page-id={pageId} aria-hidden="true"></div>

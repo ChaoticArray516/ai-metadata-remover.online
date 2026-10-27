@@ -1,0 +1,27 @@
+---
+import { PRO_CARD_COPY } from '../../data/plans';
+
+interface Props {
+  variant: 'result' | 'pricing' | 'waitlist';
+  pageId: 'home' | 'photo' | 'pricing';
+}
+
+const { variant, pageId } = Astro.props;
+---
+
+<form
+  id={variant === 'pricing' ? 'waitlist' : undefined}
+  class="waitlist-form"
+  data-waitlist-form
+  data-page-id={pageId}
+  data-variant={variant}
+>
+  <label>
+    {PRO_CARD_COPY.secondaryCta}
+    <input type="email" name="email" required autocomplete="email" />
+  </label>
+  <button type="submit" class="btn" data-track-click="waitlist" data-page-id={pageId} data-variant={variant}>
+    {PRO_CARD_COPY.secondaryCta}
+  </button>
+  <p data-waitlist-success role="status" hidden>{PRO_CARD_COPY.successMessage}</p>
+</form>

@@ -1,0 +1,80 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/site/Breadcrumbs.astro';
+import PlanTable from '../../components/pricing/PlanTable.astro';
+import PlanFaq from '../../components/pricing/PlanFaq.astro';
+import ProCard from '../../components/monetize/ProCard.astro';
+import { SITE } from '../../data/site';
+import { LINKS } from '../../data/links';
+import { FAQ_PRICING } from '../../data/faq';
+import { webAppNode, webPageNode, breadcrumbNode, faqNode } from '../../lib/schema';
+
+const title = 'Pricing — Free Photo Cleaning and Paid Plans';
+const description =
+  'Photo cleaning is free with no file limit. Paid plans add an ad-free page and, when they ship, video and PDF cleaning. No charge today.';
+const canonical = `${SITE.origin}/pricing/`;
+const crumbs = [
+  { name: 'Home', item: `${SITE.origin}/` },
+  { name: 'Pricing', item: canonical },
+];
+const app = webAppNode(canonical, SITE.brand, description);
+const graph = [
+  webPageNode(canonical, title),
+  { ...app, offers: { '@type': 'Offer', name: 'Free', price: '0', priceCurrency: 'USD' } },
+  breadcrumbNode(canonical, crumbs),
+  faqNode(canonical, FAQ_PRICING),
+];
+---
+
+<BaseLayout title={title} description={description} canonical={canonical} jsonLd={graph} h1="Pricing">
+  <Breadcrumbs crumbs={crumbs} />
+  <h1>Pricing</h1>
+  <p class="lede">The photo cleaner is free today. Video and PDF are not ready yet.</p>
+
+  <PlanTable />
+
+  <section>
+    <h2>What is free</h2>
+    <p>
+      Photo cleaning is unlimited and needs no registration. The tool runs in your browser, so every
+      file is processed on your own device and there is no per-file bill to pass on. The
+      <a href={LINKS.home.href}>Metadata Remover</a> home page is the same free tool, with the report
+      and the before-and-after comparison included.
+    </p>
+  </section>
+
+  <section>
+    <h2>What Pro adds</h2>
+    <p>
+      Pro removes the ads and adds video and PDF cleaning with 100 files a month, up to 2GB each —
+      coming soon. The free tier will include 5 files a month, up to 100MB each — coming soon as well.
+      Until those ship, the paid plan changes only the ads. You can try the
+      <a href={LINKS.photo.href}>Remove metadata from a photo</a> tool now to see what the workflow
+      feels like.
+    </p>
+  </section>
+
+  <section>
+    <h2>What you pay today</h2>
+    <p>
+      Nothing. Locking a price saves your card with a $0 charge, and the first payment happens only
+      when video and PDF cleaning goes live. Pay yearly later and it is $99 instead of $120, which is
+      17.5% less.
+    </p>
+  </section>
+
+  <ProCard variant="pricing" pageId="pricing" />
+
+  <section>
+    <h2>Common questions</h2>
+    <PlanFaq />
+  </section>
+
+  <p>
+    <a href={`${LINKS.home.href}#what-the-report-shows-you`}>What the cleaning report contains</a>
+  </p>
+
+  <script>
+    import '../../lib/analytics';
+  </script>
+</BaseLayout>

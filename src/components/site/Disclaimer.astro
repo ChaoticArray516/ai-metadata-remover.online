@@ -1,0 +1,8 @@
+---
+import { DISCLAIMER } from '../../data/faq';
+---
+
+<aside class="disclaimer">
+  <h3>{DISCLAIMER.heading}</h3>
+  {DISCLAIMER.paragraphs.map((paragraph) => <p>{paragraph}</p>)}
+</aside>

@@ -1,0 +1,22 @@
+<section>
+  <h2>PNG, HEIC and WebP photos</h2>
+  <p>The container differs. The cleaning step does not.</p>
+  <h3>PNG</h3>
+  <p>
+    PNG files often carry text chunks. Stable Diffusion and ComfyUI store prompts and workflow settings
+    there as plain text. The tool removes those chunks and the EXIF chunk; the color profile and image
+    data stay. For PNG, removing metadata is a chunk-level operation, and the image pixels are untouched.
+  </p>
+  <h3>HEIC</h3>
+  <p>
+    iPhones often shoot HEIC. The cleaner works on the file's box structure, removes the EXIF and XMP
+    items and rebuilds the box sizes. HEIC metadata removal needs no re-encoding, and if a field cannot
+    be checked, the report says so instead of guessing.
+  </p>
+  <h3>WebP</h3>
+  <p>
+    WebP stores EXIF and XMP as separate chunks, with header flags that announce them. The tool removes
+    both chunks and clears those flags, so no reader goes looking for metadata that was removed. Image
+    and animation chunks are left as they are.
+  </p>
+</section>

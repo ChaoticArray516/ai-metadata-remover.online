@@ -1,0 +1,22 @@
+---
+import type { FaqItem } from '../../data/faq';
+
+interface Props {
+  faqs: readonly FaqItem[];
+}
+
+const { faqs } = Astro.props;
+---
+
+{
+  faqs.length > 0 && (
+    <div class="faq-list">
+      {faqs.map((item) => (
+        <details id={item.id}>
+          <summary>{item.q}</summary>
+          <p>{item.a}</p>
+        </details>
+      ))}
+    </div>
+  )
+}

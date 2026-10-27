@@ -1,0 +1,14 @@
+---
+import { LINKS } from '../../data/links';
+import { SITE } from '../../data/site';
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <nav aria-label="Footer">
+    <a href={LINKS.home.href}>{LINKS.home.anchor}</a>
+    <a href={LINKS.photo.href}>{LINKS.photo.anchor}</a>
+    <a href={LINKS.pricing.href}>{LINKS.pricing.anchor}</a>
+  </nav>
+  <p>© {year} {SITE.brand}. Photos are processed in your browser.</p>
+</footer>

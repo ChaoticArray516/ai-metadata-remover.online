@@ -1,0 +1,21 @@
+---
+import { LINKS } from '../../data/links';
+import { SITE } from '../../data/site';
+---
+
+<header class="site-header">
+  <a class="brand" href={LINKS.home.href}>
+    <svg class="brand-mark" viewBox="0 0 512 512" width="28" height="28" fill="none" aria-hidden="true">
+      <rect x="94" y="108" width="236" height="278" rx="34" stroke="currentColor" stroke-width="24" />
+      <path d="M135 294l56-64 44 42 31-36 43 54" class="brand-accent" stroke-width="22" stroke-linecap="round" stroke-linejoin="round" />
+      <path d="M137 328h148" stroke="currentColor" stroke-width="18" stroke-linecap="round" opacity=".42" />
+      <path d="M323 164C350 163 364 153 378 138" class="brand-accent" stroke-width="12" stroke-linecap="round" stroke-dasharray="10 16" />
+      <path d="M392 78h70l42 42v70l-42 42h-70l-42-42v-70z" class="brand-accent" stroke-width="22" stroke-linejoin="round" />
+      <circle cx="430" cy="122" r="10" class="brand-accent-fill" />
+    </svg>
+    {SITE.brand}
+  </a>
+  <nav aria-label="Main">
+    <a href={LINKS.pricing.href}>{LINKS.pricing.anchor}</a>
+  </nav>
+</header>

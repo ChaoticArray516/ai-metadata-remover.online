@@ -1,0 +1,100 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ToolBench from '../../components/tool/ToolBench.astro';
+import FaqList from '../../components/site/FaqList.astro';
+import Breadcrumbs from '../../components/site/Breadcrumbs.astro';
+import Disclaimer from '../../components/site/Disclaimer.astro';
+import ProCard from '../../components/monetize/ProCard.astro';
+import AdSlot from '../../components/monetize/AdSlot.astro';
+import GpsSection from '../../components/photo/GpsSection.astro';
+import ExifGroupSection from '../../components/photo/ExifGroupSection.astro';
+import FormatSection from '../../components/photo/FormatSection.astro';
+import CompareSection from '../../components/photo/CompareSection.astro';
+import UseCaseSection from '../../components/photo/UseCaseSection.astro';
+import { SITE } from '../../data/site';
+import { LINKS } from '../../data/links';
+import { FAQ_PHOTO } from '../../data/faq';
+import { webAppNode, webPageNode, breadcrumbNode, faqNode } from '../../lib/schema';
+
+const title = 'Remove Metadata from Photo — EXIF, GPS and XMP Cleaner';
+const description =
+  'Strip EXIF, GPS coordinates and XMP from a photo without uploading it. See every field before and after, then download a cleaning report.';
+const canonical = `${SITE.origin}/remove-metadata-from-photo/`;
+const crumbs = [
+  { name: 'Home', item: `${SITE.origin}/` },
+  { name: 'Remove Metadata from Photo', item: canonical },
+];
+const graph = [
+  webAppNode(canonical, 'Remove Metadata from Photo', description),
+  webPageNode(canonical, title),
+  breadcrumbNode(canonical, crumbs),
+  ...(FAQ_PHOTO.length > 0 ? [faqNode(canonical, FAQ_PHOTO)] : []),
+];
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  canonical={canonical}
+  jsonLd={graph}
+  h1="Remove Metadata from Photo"
+>
+  <Breadcrumbs crumbs={crumbs} />
+  <h1>Remove Metadata from Photo</h1>
+  <p class="lede">Works on iPhone and Android photos. Nothing leaves your device.</p>
+  <p>
+    Photos you take on a phone usually carry the device model, the time, and often the exact coordinates.
+    This tool removes those segments in your browser and shows you the file before and after.
+  </p>
+
+  <section class="tool-first" aria-label="Clean a photo">
+    <ToolBench
+      variant="photo"
+      dropLabel="Drop a photo here, or take one"
+      capture={true}
+      accept="image/jpeg,image/png,image/webp,image/heic,image/heif"
+      resultTitle="Your photo"
+    />
+    <ProCard variant="result" pageId="photo" />
+    <AdSlot pageId="photo" slotId="photo-after-result" />
+  </section>
+
+  <section>
+    <h2>What your phone writes into a photo</h2>
+    <p>A phone photo carries more than the scene. It carries the phone.</p>
+    <p>
+      Every shot can store the handset model, the lens, the capture time, the editing app and, if you
+      allowed it, your location. That metadata travels with the file when you send or upload it. This
+      page removes metadata from photo files directly on your device: choose a picture, let the cleaner
+      cut the segments, then read the report. For the wider file picture, the
+      <a href={LINKS.home.href}>Metadata Remover</a> home page covers all supported formats.
+    </p>
+  </section>
+
+  <GpsSection />
+  <ExifGroupSection />
+
+  <section>
+    <h2>Remove metadata from an iPhone or Android photo</h2>
+    <p>The steps are the same on both. The file is different.</p>
+    <p>
+      On an iPhone you can take a photo with the camera button or pick an existing one; iOS may hand back
+      a HEIC file, which this tool accepts. On Android, pick a JPEG, PNG or WebP from your gallery or
+      files app. Then let the cleaner remove the metadata and download the result. There is no app to
+      install and no account, and if the camera button is unavailable in your browser, choosing a file
+      works exactly the same way.
+    </p>
+  </section>
+
+  <FormatSection />
+  <CompareSection />
+  <UseCaseSection />
+
+  <section>
+    <h2>Common questions</h2>
+    {/* FAQ_PHOTO: verbatim copy from phase3/3a_faq_copy.md, single source for visible list and JSON-LD. */}
+    <FaqList faqs={FAQ_PHOTO} />
+  </section>
+
+  <Disclaimer />
+</BaseLayout>

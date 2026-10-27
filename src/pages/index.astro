@@ -1,0 +1,133 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ToolBench from '../components/tool/ToolBench.astro';
+import FaqList from '../components/site/FaqList.astro';
+import Disclaimer from '../components/site/Disclaimer.astro';
+import ProCard from '../components/monetize/ProCard.astro';
+import AdSlot from '../components/monetize/AdSlot.astro';
+import { SITE } from '../data/site';
+import { LINKS } from '../data/links';
+import { FAQ_HOME } from '../data/faq';
+import { orgNode, siteNode, webAppNode, webPageNode, faqNode } from '../lib/schema';
+
+const title = 'Metadata Remover — Inspect and Remove EXIF, XMP, IPTC';
+const description =
+  'Remove EXIF, XMP, IPTC and JUMBF from your photos in the browser. Nothing is uploaded. Compare before and after, then download a cleaning report.';
+const canonical = `${SITE.origin}/`;
+const graph = [
+  orgNode(),
+  siteNode(),
+  webAppNode(canonical, 'Metadata Remover', description),
+  webPageNode(canonical, title),
+  ...(FAQ_HOME.length > 0 ? [faqNode(canonical, FAQ_HOME)] : []),
+];
+---
+
+<BaseLayout title={title} description={description} canonical={canonical} jsonLd={graph} h1="Metadata Remover">
+  <h1>Metadata Remover</h1>
+  <p class="lede">Photos in your browser. Nothing uploaded.</p>
+  <p>
+    A photo carries the device that took it, the time it was taken, and often the place. This tool reads
+    those segments, removes them in your browser, and shows you exactly what changed.
+  </p>
+
+  <section class="tool-first" aria-label="Clean a file">
+    <ToolBench
+      variant="home"
+      dropLabel="Drop a file here, or choose one"
+      capture={false}
+      accept="image/jpeg,image/png,image/webp,image/heic,image/heif"
+      resultTitle="Your file"
+    />
+    <ProCard variant="result" pageId="home" />
+    <AdSlot pageId="home" slotId="home-after-result" />
+  </section>
+
+  <section>
+    <h2>What file metadata is, and what it carries</h2>
+    <p>A photo holds more than pixels. It holds a record of how it was made.</p>
+    <p>
+      Alongside the image data, a file can store the camera or phone model, the lens, a serial number, the
+      date and time, GPS coordinates, editing software, and a thumbnail. Some of that arrives from the
+      camera, some is added later by an editor or an app. A metadata remover works on these extra segments
+      rather than on the picture itself, so the pixels stay exactly as they were.
+    </p>
+    <p>
+      People use a metadata remover for ordinary, practical reasons: a listing photo should not tell
+      strangers where the item is stored, and a screenshot shared at work should not carry a device serial
+      number. If you mainly handle phone pictures, the page about
+      <a href={LINKS.photo.href}>photo metadata</a> goes field by field.
+    </p>
+  </section>
+
+  <section>
+    <h2>Remove metadata in three steps</h2>
+    <p>Pick a file, run the cleaner, read the report.</p>
+    <p>
+      First, drop a file onto the tool below or choose one from your device. Second, let the metadata
+      remover strip the segments it knows about; the work happens on your device, and the file is not sent
+      anywhere. Third, download the cleaned file and, if you want proof, open the report and compare the
+      before and after lists. Removing metadata this way takes three clicks at most, and there is no
+      account to create.
+    </p>
+  </section>
+
+  <section>
+    <h2>Which formats work today</h2>
+    <p>JPEG, PNG, WebP and HEIC work now. Video and PDF do not.</p>
+    <p>
+      For JPEG, the metadata remover deletes the EXIF, XMP, IPTC and JUMBF segments and keeps the color
+      profile and image data. For PNG it removes text chunks and the EXIF chunk, including the prompt and
+      workflow text some generators store. For WebP it removes the EXIF and XMP chunks and clears the
+      matching header flags. HEIC files are cleaned at the container level. When you clean metadata here,
+      the output is a new file; your original never changes.
+    </p>
+    <p>
+      If you only need to remove metadata from a photo, the dedicated page explains the per-format
+      details: <a href={LINKS.photo.href}>Remove metadata from a photo</a>.
+    </p>
+  </section>
+
+  <section id="what-the-report-shows-you">
+    <h2>What the report shows you</h2>
+    <p>The report lists what was found, what was removed, and what was left alone.</p>
+    <p>
+      Every run of this metadata remover ends with a downloadable report in HTML and JSON. It records the
+      conclusion, the scope of that conclusion, the output file's hash, and a segment-by-segment list with
+      counts. Removed segments are confirmed by re-reading the cleaned file with the same parser, so the
+      after-list is a fresh read, not a copy. The report never prints the original values of removed
+      fields, because a report you share should not leak the very data you just removed.
+    </p>
+  </section>
+
+  <section>
+    <h2>What in a file makes a platform label it as AI</h2>
+    <p>Some platforms read a signature inside the file. Others read text an AI tool left behind.</p>
+    <p>
+      A file can carry Content Credentials in a manifest segment, an XMP field that declares a synthetic
+      source, or plain text blocks with a prompt and generation settings. These are different things, and
+      the report names them separately. Midjourney is a useful counterexample: as of early 2026 it does not
+      write C2PA or IPTC metadata, so its images usually show nothing at all. Nothing found does not mean
+      the file is not AI. Removing metadata changes what a file declares; it cannot change what a detector
+      sees in the pixels, and it cannot change a label a platform already placed on a post.
+    </p>
+    {/* [3e] One-sentence link to the AI inner page goes here after W12; no H2 section allowed. */}
+  </section>
+
+  <section>
+    <h2>Common questions</h2>
+    {/* FAQ_HOME: verbatim copy from phase3/3a_faq_copy.md, single source for visible list and JSON-LD. */}
+    <FaqList faqs={FAQ_HOME} />
+  </section>
+
+  <section>
+    <h2>Pricing</h2>
+    <p>The photo cleaner is free with no file limit.</p>
+    <p>
+      This metadata remover runs on your own device, so unlimited use costs us nothing to offer. Paid
+      plans are about video, PDF and an ad-free page. <a href={LINKS.pricing.href}>See what is free and what is not</a>.
+    </p>
+  </section>
+
+  <Disclaimer />
+</BaseLayout>

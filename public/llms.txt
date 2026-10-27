@@ -1,0 +1,15 @@
+# AI Metadata Remover
+
+> Browser-based metadata cleaning for JPEG, PNG, WebP and HEIC photos. Files are processed locally in the browser; nothing is uploaded. Includes a before-and-after field comparison and a downloadable cleaning report. Video and PDF cleaning are not available yet.
+
+## Pages
+
+- [Metadata Remover](https://ai-metadata-remover.online/): inspect and remove EXIF, XMP, IPTC and JUMBF segments from files in the browser.
+- [Remove Metadata from Photo](https://ai-metadata-remover.online/remove-metadata-from-photo/): phone photo cleaning with EXIF and GPS detail, iPhone and Android supported.
+- [Pricing](https://ai-metadata-remover.online/pricing/): free unlimited photo cleaning; paid plans are listed for when video and PDF cleaning ship.
+
+## Boundaries
+
+- The tool works on metadata segments only. It does not detect or remove invisible watermarks such as SynthID, and it cannot change labels a platform shows on a posted image.
+- Nothing found in a file does not mean the file is not AI-generated.
+- Reports describe the state of the cleaned file only; they are not legal advice.

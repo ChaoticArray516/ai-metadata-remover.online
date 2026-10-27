@@ -1,0 +1,24 @@
+---
+import { EMPTY_FIELDS_MESSAGE } from '../../lib/inspect/basic';
+---
+
+<section class="diff-table" data-diff-table hidden>
+  <h3>What changed in this file</h3>
+  <p data-diff-empty hidden>{EMPTY_FIELDS_MESSAGE}</p>
+  <div data-diff-summary></div>
+  <button type="button" class="btn btn-tertiary" data-show-fields>Show all fields</button>
+  <div class="table-wrap" data-field-rows hidden>
+    <table>
+      <thead>
+        <tr>
+          <th>Group</th>
+          <th>Segment</th>
+          <th>Before</th>
+          <th>After</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody data-field-body></tbody>
+    </table>
+  </div>
+</section>

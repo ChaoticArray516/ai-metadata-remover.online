@@ -1,0 +1,29 @@
+---
+import { PRO_CARD_COPY } from '../../data/plans';
+import { LINKS } from '../../data/links';
+import WaitlistForm from './WaitlistForm.astro';
+
+interface Props {
+  variant: 'result' | 'pricing' | 'waitlist';
+  pageId: 'home' | 'photo' | 'pricing';
+}
+
+const { variant, pageId } = Astro.props;
+---
+
+<aside class="pro-card" data-pro-card={variant} data-page-id={pageId}>
+  <h3>{variant === 'pricing' ? 'Pro early access' : 'What Pro adds'}</h3>
+  <p>{PRO_CARD_COPY.trigger}</p>
+  <p>{PRO_CARD_COPY.value}</p>
+  <div class="btn-row">
+    <a class="btn btn-primary" href={`${LINKS.pricing.href}#waitlist`} data-track-click="lock_price" data-page-id={pageId} data-variant={variant}>
+      {PRO_CARD_COPY.primaryCta}
+    </a>
+  </div>
+  <p class="lede">{PRO_CARD_COPY.lockPriceNote}</p>
+  <ul>
+    {PRO_CARD_COPY.facts.map((fact) => <li>{fact}</li>)}
+  </ul>
+  <p>{PRO_CARD_COPY.footnote}</p>
+  <WaitlistForm variant={variant} pageId={pageId} />
+</aside>

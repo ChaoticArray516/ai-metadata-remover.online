@@ -1,0 +1,51 @@
+---
+import '../styles/base.css';
+import { SITE } from '../data/site';
+import { jsonLdScript } from '../lib/schema';
+import Header from '../components/site/Header.astro';
+import Footer from '../components/site/Footer.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  canonical: string;
+  jsonLd: readonly object[];
+  h1: string;
+  ogType?: 'website' | 'article';
+}
+
+const { title, description, canonical, jsonLd, h1, ogType = 'website' } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta property="og:type" content={ogType} />
+    <meta property="og:site_name" content={SITE.brand} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={SITE.ogImage} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={SITE.ogImage} />
+    <meta name="og:h1" content={h1} />
+    <script type="application/ld+json" set:html={jsonLdScript(jsonLd)} />
+  </head>
+  <body>
+    <div class="container">
+      <Header />
+      <main id="main">
+        <slot />
+      </main>
+      <Footer />
+    </div>
+  </body>
+</html>
