@@ -55,7 +55,6 @@ const graph = [
       accept="image/jpeg,image/png,image/webp,image/heic,image/heif"
       resultTitle="Your photo"
     />
-    <ProCard variant="result" pageId="photo" />
     <AdSlot pageId="photo" slotId="photo-after-result" />
   </section>
 
@@ -70,6 +69,8 @@ const graph = [
       <a href={LINKS.home.href}>Metadata Remover</a> home page covers all supported formats.
     </p>
   </section>
+
+  <ProCard variant="result" pageId="photo" />
 
   <GpsSection />
   <ExifGroupSection />

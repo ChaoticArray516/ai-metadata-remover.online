@@ -20,6 +20,7 @@ const ALLOW = new Set([
 ]);
 
 const queue: Record<string, unknown>[] = [];
+const ANALYTICS_ENDPOINT = '';
 let sessionId: string | undefined;
 
 function session(): string {
@@ -42,10 +43,11 @@ export function track(name: EventName, props: Record<string, unknown> = {}): voi
   if (!clean.plan_state) clean.plan_state = 'anonymous' satisfies PlanState;
   queue.push(clean);
   if (queue.length > 50) queue.shift();
+  if (!ANALYTICS_ENDPOINT) return;
   try {
-    navigator.sendBeacon('/e', JSON.stringify(clean));
+    navigator.sendBeacon(ANALYTICS_ENDPOINT, JSON.stringify(clean));
   } catch {
-    // /e does not exist in 3a; failures are silent, never retried.
+    return;
   }
 }
 

@@ -1,0 +1,34 @@
+---
+import type { EXAMPLES } from '../../data/examples';
+
+interface Props {
+  sample: (typeof EXAMPLES)[number];
+}
+
+const { sample } = Astro.props;
+---
+
+<div class="table-wrap">
+  <table class="sample-table before-after">
+    <thead>
+      <tr><th scope="col">Field</th><th scope="col">Before</th><th scope="col">After</th></tr>
+    </thead>
+    <tbody>
+      {sample.rows.length === 0 ? (
+        <tr>
+          <td>No metadata fields found</td>
+          <td>0</td>
+          <td>{sample.id === 'already-cleaned' ? 'Unchanged' : '0'}</td>
+        </tr>
+      ) : (
+        sample.rows.map((row) => (
+          <tr>
+            <th scope="row">{row.group}: {row.name}</th>
+            <td>{row.before}</td>
+            <td>{row.status === 'removed' ? 'Removed' : row.status === 'remaining' ? 'Not removed' : row.status}</td>
+          </tr>
+        ))
+      )}
+    </tbody>
+  </table>
+</div>

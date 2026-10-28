@@ -1,0 +1,49 @@
+.compare-byline {
+  color: var(--color-muted);
+  font-size: var(--text-sm);
+}
+
+.table-wrap {
+  max-width: 100%;
+  margin-block: var(--space-3) var(--space-2);
+}
+
+.compare-table {
+  min-width: 720px;
+}
+
+.table-wrap .compare-table > thead > tr > :first-child,
+.table-wrap .compare-table > tbody > tr > :first-child {
+  position: sticky;
+  left: 0;
+  z-index: 1;
+  background: var(--color-surface);
+  box-shadow: 1px 0 var(--color-border);
+}
+
+.compare-table .self-column {
+  border-bottom: 2px solid var(--color-primary);
+}
+
+.compare-table .cell-note {
+  background: var(--color-warning-bg);
+  color: var(--color-warning);
+}
+
+.compare-table .cell-claim {
+  background: var(--color-primary-soft);
+}
+
+.internal-links {
+  padding-left: var(--space-3);
+}
+
+.other-comparisons {
+  margin-top: var(--space-5);
+  padding-top: var(--space-2);
+  border-top: 1px solid var(--color-border);
+}
+
+.other-comparisons p {
+  font-weight: 600;
+}

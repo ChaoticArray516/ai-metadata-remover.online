@@ -22,8 +22,9 @@ export function bodyWordReport(pageHtml, id) {
     body = next;
   };
 
-  // 工具台区块：tool-first 包裹 ToolBench + ProCard + AdSlot，止于首个正文 <section><h2>
-  cut('tool+pro+ads', /<section class="tool-first"[\s\S]*?(?=<section>\s*<h2)/);
+  // 工具台区块：tool-first 包裹 ToolBench + AdSlot，止于首个正文 <section><h2>
+  cut('tool+ads', /<section class="tool-first"[\s\S]*?(?=<section>\s*<h2)/);
+  cut('pro', /<aside class="pro-card"[\s\S]*?<\/aside>/g);
   // FAQ 问答（保留 "Common questions" H2 标题本身）
   cut('faq', /<details[\s\S]*?<\/details>/g);
   // 免责声明

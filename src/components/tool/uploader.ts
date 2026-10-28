@@ -155,15 +155,38 @@ export function mountToolBench(root: HTMLElement): void {
       objectUrls = [cleanedUrl, htmlUrl, jsonUrl];
 
       const baseName = file.name.replace(/\.[^.]+$/, '');
-      const cleanedLink = query<HTMLAnchorElement>(root, '[data-download-cleaned]');
-      cleanedLink.href = cleanedUrl;
-      cleanedLink.download = `${baseName}-cleaned.${file.name.split('.').pop() ?? 'jpg'}`;
-      const htmlLink = query<HTMLAnchorElement>(root, '[data-download-report-html]');
-      htmlLink.href = htmlUrl;
-      htmlLink.download = `${baseName}-cleaning-report.html`;
-      const jsonLink = query<HTMLAnchorElement>(root, '[data-download-report-json]');
-      jsonLink.href = jsonUrl;
-      jsonLink.download = `${baseName}-cleaning-report.json`;
+      const cleanedButton = query<HTMLButtonElement>(root, '[data-download-cleaned]');
+      const downloads = [
+        {
+          button: cleanedButton,
+          url: cleanedUrl,
+          fileName: `${baseName}-cleaned.${file.name.split('.').pop() ?? 'jpg'}`,
+        },
+        {
+          button: query<HTMLButtonElement>(root, '[data-download-report-html]'),
+          url: htmlUrl,
+          fileName: `${baseName}-cleaning-report.html`,
+        },
+        {
+          button: query<HTMLButtonElement>(root, '[data-download-report-json]'),
+          url: jsonUrl,
+          fileName: `${baseName}-cleaning-report.json`,
+        },
+      ];
+      for (const { button, url, fileName } of downloads) {
+        button.onclick = () => {
+          const link = document.createElement('a');
+          link.href = url;
+          link.download = fileName;
+          link.hidden = true;
+          root.appendChild(link);
+          link.click();
+          link.remove();
+          if (button === cleanedButton) {
+            track('report_cta_clicked', { page_id: pageId, state: report.data.state.toLowerCase() });
+          }
+        };
+      }
 
       const stateText =
         report.data.state === 'S2' ? 'CLEAN' : report.data.state === 'S3' ? 'CLEAN, WITH NOTES' : 'NEEDS ATTENTION';
@@ -192,9 +215,6 @@ export function mountToolBench(root: HTMLElement): void {
         has_c2pa: before.hasJumbf,
         gen_ms: Math.round(report.data.durationMs),
       });
-      cleanedLink.addEventListener('click', () => {
-        track('report_cta_clicked', { page_id: pageId, state: report.data.state.toLowerCase() });
-      }, { once: true });
 
       showFields.onclick = async () => {
         showFields.hidden = true;

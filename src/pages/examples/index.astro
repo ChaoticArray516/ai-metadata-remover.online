@@ -1,0 +1,150 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/site/Breadcrumbs.astro';
+import InternalLinks from '../../components/InternalLinks.astro';
+import SampleCard from '../../components/examples/SampleCard.astro';
+import { EXAMPLES } from '../../data/examples';
+import { SITE } from '../../data/site';
+import { breadcrumbNode } from '../../lib/schema';
+import '../../styles/examples.css';
+
+const title = 'Metadata Removal Examples — Before and After Files';
+const description = 'Eight synthetic files, cleaned in the browser. See every field we read before and after, which files had nothing to find, and what a clean report looks like.';
+const canonical = `${SITE.origin}/examples/`;
+const crumbs = [
+  { name: 'Home', item: `${SITE.origin}/` },
+  { name: 'Examples', item: canonical },
+];
+const pageSamples = [
+  'pixel-exif-basic',
+  'iphone-heic-makernote',
+  'webp-exif-chunk',
+  'sd-png-text-chunk',
+  'c2pa-signed-manifest',
+  'adobe-xmp-iptc-full',
+  'no-tags-at-all',
+  'already-cleaned',
+].map((id) => EXAMPLES.find((sample) => sample.id === id)!);
+const graph = [
+  {
+    '@type': 'CollectionPage',
+    '@id': `${canonical}#webpage`,
+    url: canonical,
+    name: title,
+    description,
+    isPartOf: { '@id': SITE.siteId },
+    publisher: { '@id': SITE.orgId },
+    inLanguage: 'en-US',
+    datePublished: '2026-10-27',
+    dateModified: '2026-10-27',
+    mainEntity: { '@id': `${canonical}#itemlist` },
+  },
+  {
+    '@type': 'ItemList',
+    '@id': `${canonical}#itemlist`,
+    name: 'Metadata removal examples',
+    numberOfItems: pageSamples.length,
+    itemListOrder: 'https://schema.org/ItemListOrderAscending',
+    itemListElement: pageSamples.map((sample, index) => ({
+      '@type': 'ListItem',
+      position: index + 1,
+      name: sample.id,
+      url: `${canonical}#sample-${sample.id}`,
+    })),
+  },
+  breadcrumbNode(canonical, crumbs),
+];
+const byId = (id: string) => EXAMPLES.find((sample) => sample.id === id)!;
+---
+
+<BaseLayout title={title} description={description} canonical={canonical} jsonLd={graph} h1="Metadata Removal Examples">
+  <Breadcrumbs crumbs={crumbs} />
+  <h1>Metadata Removal Examples</h1>
+  <p class="lede">Eight synthetic files. Real engine output, unedited.</p>
+
+  <section>
+    <h2>What these examples are</h2>
+    <p>Every file here came out of a build script, not out of someone's camera roll.</p>
+    <p>
+      The pictures are small generated images or clearly disclosed public test assets. The build adds controlled
+      metadata, including zero coordinates, test serial numbers and placeholder generation text. It never invents
+      a person, a location or a trusted signing identity. Two public assets are used where local construction was
+      not available: a libheif test image and a C2PA test file. Their card notes identify them.
+    </p>
+    <p>
+      Each row below comes from the same parser and cleaning engine used by the tool. The build reads the input,
+      cleans it, reads the output again and stores that result. No field list is written by hand for this page.
+    </p>
+  </section>
+
+  <section>
+    <h2>A phone photo, before and after</h2>
+    <p>The first, second and sixth cards start with familiar phone or camera metadata.</p>
+    <p>
+      The JPEG card contains device, date and GPS information inside its EXIF segment. The cleaner removes that
+      segment without rebuilding the picture. The HEIC card stores an EXIF item in the file container instead.
+      Its item index and data offsets change when that item is removed, while the image item remains in place.
+      These are different container operations with the same before-and-after reading method.
+    </p>
+    <p>
+      The WebP card shows the chunk-based form. EXIF and XMP live in their own chunks, and the corresponding
+      header flags must be cleared as well. A zero in the after column means the parser found no matching segment
+      on its second read. It does not mean that a visual detector examined the pixels or that a platform made a
+      new decision about the image.
+    </p>
+    <SampleCard sample={byId('pixel-exif-basic')} />
+    <SampleCard sample={byId('iphone-heic-makernote')} />
+    <SampleCard sample={byId('webp-exif-chunk')} />
+    <InternalLinks page="examples" where="after-phone" />
+  </section>
+
+  <section>
+    <h2>Text and credentials stored inside the file</h2>
+    <p>These three cards hold information that is easy to overlook when viewing only the picture.</p>
+    <p>
+      The PNG example stores placeholder prompt and workflow settings in a text chunk. That text is not a
+      cryptographic origin proof. It is simply metadata written into the container, and the engine removes the
+      chunk. The XMP and IPTC example shows separate JPEG segments. They are listed separately because a single
+      format can carry several kinds of metadata at once.
+    </p>
+    <p>
+      The signed-manifest card uses a public C2PA test asset. Its manifest exists for testing, not as a claim
+      that this site issued or trusted a credential. The cleaner removes the JUMBF segments it can identify,
+      then checks that they are absent. That file operation says nothing about the pixels, an existing post or
+      what a service may have recorded before the file was cleaned.
+    </p>
+    <SampleCard sample={byId('sd-png-text-chunk')} />
+    <SampleCard sample={byId('c2pa-signed-manifest')} />
+    <SampleCard sample={byId('adobe-xmp-iptc-full')} />
+  </section>
+
+  <section>
+    <h2>Files with nothing to find</h2>
+    <SampleCard sample={byId('no-tags-at-all')} />
+    <SampleCard sample={byId('already-cleaned')} />
+    <p>
+      The first file never carried the supported metadata segments. The second had already passed through the
+      cleaner. Both produce an honest empty result rather than a list invented to make the output look busier.
+      An unchanged file is not proof of origin, and the absence of readable fields is not an AI determination.
+    </p>
+    <InternalLinks page="examples" where="after-empty" />
+  </section>
+
+  <section>
+    <h2>How to read the report</h2>
+    <p>The left side records what the parser found; the right side comes from a fresh read after cleaning.</p>
+    <p>
+      On this page, the field column names the group and segment, while the before and after columns show counts.
+      Removed means the second read did not find that segment. In the full tool report, Not removed marks an item
+      that remained despite the cleaning pass, so the conclusion stays bounded by what the engine actually saw.
+    </p>
+    <p>
+      The tool can save the same findings as a self-contained HTML report and a JSON sidecar. The report includes
+      the output hash and processing scope but omits removed original values. These cards do not offer downloads;
+      they are static evidence of the engine's reading, not replacements for running a file of your own.
+    </p>
+    <InternalLinks page="examples" where="after-report" />
+  </section>
+
+  <InternalLinks page="examples" where="page-end" />
+</BaseLayout>

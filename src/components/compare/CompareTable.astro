@@ -1,0 +1,39 @@
+---
+import { UNVERIFIED, type CompareCell, type CompareRow } from '../../data/competitors';
+
+interface Props {
+  rows: readonly CompareRow[];
+  selfName: string;
+  rivalName: string;
+}
+
+const { rows, selfName, rivalName } = Astro.props;
+
+function cellText(cell: CompareCell): string {
+  if (cell.checked !== false) return cell.text;
+  return cell.text ? `${UNVERIFIED} ${cell.text}` : UNVERIFIED;
+}
+---
+
+<div class="table-wrap">
+  <table class="compare-table">
+    <thead>
+      <tr>
+        <th scope="col">Dimension</th>
+        <th scope="col" class="self-column">{selfName}</th>
+        <th scope="col">{rivalName}</th>
+      </tr>
+    </thead>
+    <tbody>
+      {rows.map((row) => (
+        <tr>
+          <th scope="row">{row.label}</th>
+          <td>{row.self}</td>
+          <td class:list={[{ 'cell-note': row.rival.note, 'cell-claim': row.rival.claim }]}>
+            {row.rival.strong ? <strong>{cellText(row.rival)}</strong> : cellText(row.rival)}
+          </td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>

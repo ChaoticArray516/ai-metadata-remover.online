@@ -1,0 +1,87 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../site/Breadcrumbs.astro';
+import FaqList from '../site/FaqList.astro';
+import InternalLinks from '../InternalLinks.astro';
+import CompareTable from './CompareTable.astro';
+import VerdictBlock from './VerdictBlock.astro';
+import { SITE } from '../../data/site';
+import { LINKS } from '../../data/links';
+import { breadcrumbNode, faqNode } from '../../lib/schema';
+import type { CompetitorPage } from '../../data/competitors';
+import '../../styles/compare.css';
+
+interface Props {
+  page: CompetitorPage;
+}
+
+const { page } = Astro.props;
+const canonical = `${SITE.origin}${LINKS[page.key].href}`;
+const crumbs = [
+  { name: 'Home', item: `${SITE.origin}/` },
+  { name: page.breadcrumbName, item: canonical },
+];
+const graph = [
+  {
+    '@type': 'WebPage',
+    '@id': `${canonical}#webpage`,
+    url: canonical,
+    name: page.title,
+    description: page.description,
+    isPartOf: { '@id': SITE.siteId },
+    publisher: { '@id': SITE.orgId },
+    inLanguage: 'en-US',
+    datePublished: '2026-10-27',
+    dateModified: '2026-10-27',
+  },
+  {
+    '@type': 'Article',
+    '@id': `${canonical}#article`,
+    headline: page.h1,
+    description: page.articleDescription,
+    datePublished: '2026-10-27',
+    dateModified: '2026-10-27',
+    inLanguage: 'en-US',
+    mainEntityOfPage: { '@id': `${canonical}#webpage` },
+    author: { '@id': SITE.orgId },
+    publisher: { '@id': SITE.orgId },
+  },
+  breadcrumbNode(canonical, crumbs),
+  faqNode(canonical, page.faqs),
+];
+---
+
+<BaseLayout title={page.title} description={page.description} canonical={canonical} jsonLd={graph} h1={page.h1} ogType="article">
+  <Breadcrumbs crumbs={crumbs} />
+  <h1>{page.h1}</h1>
+  <p class="lede">{page.lead}</p>
+  <p class="compare-byline">{page.byline}</p>
+
+  <section>
+    <h2>Feature comparison as of 2026-10-26</h2>
+    {page.featureParagraphs.map((paragraph) => <p>{paragraph}</p>)}
+    <CompareTable rows={page.rows} selfName={page.selfName} rivalName={page.rivalName} />
+    <InternalLinks page={page.key} where="after-table" />
+  </section>
+
+  <VerdictBlock heading={page.differences.heading} paragraphs={page.differences.paragraphs} />
+  <InternalLinks page={page.key} where="after-differences" />
+
+  <section>
+    <h2>What we do not do</h2>
+    {page.limits.map((paragraph) => <p>{paragraph}</p>)}
+  </section>
+
+  <VerdictBlock heading={page.fit.heading} paragraphs={page.fit.paragraphs} />
+  <InternalLinks page={page.key} where="after-fit" />
+
+  <section>
+    <h2>Common questions</h2>
+    <FaqList faqs={page.faqs} />
+  </section>
+
+  <nav class="other-comparisons" aria-label="Other comparisons">
+    <p>Other comparisons</p>
+    <InternalLinks page={page.key} where="other-comparisons" />
+  </nav>
+</BaseLayout>

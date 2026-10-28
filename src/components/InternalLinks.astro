@@ -1,0 +1,21 @@
+---
+import { CONTEXT_LINKS, type PageKey } from '../data/links';
+
+interface Props {
+  page: PageKey;
+  where: string;
+}
+
+const { page, where } = Astro.props;
+const links = CONTEXT_LINKS[page].filter((link) => link.where === where);
+---
+
+{
+  links.length > 0 && (
+    <ul class="internal-links">
+      {links.map((link) => (
+        <li><a href={link.href}>{link.anchor}</a></li>
+      ))}
+    </ul>
+  )
+}

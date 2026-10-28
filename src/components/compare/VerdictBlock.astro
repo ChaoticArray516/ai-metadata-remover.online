@@ -1,0 +1,12 @@
+---
+import type { VerdictContent } from '../../data/competitors';
+
+interface Props extends VerdictContent {}
+
+const { heading, paragraphs } = Astro.props;
+---
+
+<section class="verdict-block">
+  <h2>{heading}</h2>
+  {paragraphs.map((paragraph) => <p>{paragraph}</p>)}
+</section>

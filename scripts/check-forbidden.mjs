@@ -41,9 +41,14 @@ check('exifr single import point at inspect/full.ts',
   exifrImports.length === 1 && exifrImports[0].endsWith(join('inspect', 'full.ts')), exifrImports.join(','));
 
 const pkg = JSON.parse(readFileSync(join(ROOT, 'package.json'), 'utf8'));
-const pkgText = JSON.stringify(pkg);
-check('package.json no banned deps',
-  !/ffmpeg|exiftool|mupdf|ghostscript|libheif|pdf-lib|mediabunny|mp4box|c2pa|contentauth/.test(pkgText));
+const runtimePkgText = JSON.stringify(pkg.dependencies ?? {});
+check('package.json no banned runtime deps',
+  !/ffmpeg|exiftool|mupdf|ghostscript|libheif|pdf-lib|mediabunny|mp4box|c2pa|contentauth/.test(runtimePkgText));
+const allowedBuildDeps = new Set(['typescript', 'piexifjs', 'png-chunks-extract', 'libheif-js']);
+const devPkgText = JSON.stringify(Object.fromEntries(Object.entries(pkg.devDependencies ?? {})
+  .filter(([name]) => !allowedBuildDeps.has(name))));
+check('package.json no banned dev deps outside 3B build whitelist',
+  !/ffmpeg|exiftool|mupdf|ghostscript|libheif|pdf-lib|mediabunny|mp4box|c2pa|contentauth/.test(devPkgText));
 
 const headers = readFileSync(join(DIST, '_headers'), 'utf8');
 check("CSP includes connect-src 'self'", headers.includes("connect-src 'self'"));

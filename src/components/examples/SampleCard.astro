@@ -1,0 +1,25 @@
+---
+import type { EXAMPLES } from '../../data/examples';
+import BeforeAfterTable from './BeforeAfterTable.astro';
+
+interface Props {
+  sample: (typeof EXAMPLES)[number];
+}
+
+const { sample } = Astro.props;
+---
+
+<article class:list={['sample-card', { 'empty-state': sample.empty }]} id={`sample-${sample.id}`} data-sample-id={sample.id}>
+  {sample.empty && <p>Nothing found does not mean the file is not AI</p>}
+  <h3>{sample.id}</h3>
+  <p>{sample.format} · {sample.bytes} bytes before · {sample.outputBytes} bytes after</p>
+  <p>{sample.note}</p>
+  {sample.folded ? (
+    <details>
+      <summary>Show the full field list</summary>
+      <BeforeAfterTable sample={sample} />
+    </details>
+  ) : (
+    <BeforeAfterTable sample={sample} />
+  )}
+</article>

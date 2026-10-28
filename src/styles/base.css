@@ -176,6 +176,8 @@ svg {
 }
 
 .faq-list summary {
+  min-height: 44px;
+  padding-block: var(--space-1);
   font-weight: 600;
   cursor: pointer;
 }

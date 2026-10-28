@@ -12,7 +12,7 @@ const { variant, pageId } = Astro.props;
 ---
 
 <aside class="pro-card" data-pro-card={variant} data-page-id={pageId}>
-  <h3>{variant === 'pricing' ? 'Pro early access' : 'What Pro adds'}</h3>
+  <p><strong>{variant === 'pricing' ? 'Pro early access' : 'What Pro adds'}</strong></p>
   <p>{PRO_CARD_COPY.trigger}</p>
   <p>{PRO_CARD_COPY.value}</p>
   <div class="btn-row">

@@ -1,6 +1,6 @@
 import { PAGES, readPage, mainContent, check, finish } from './lib.mjs';
 
-const PLANNED = /href="\/(examples|compare|guides|remove-metadata-from-pdf|remove-metadata-from-video|ai-metadata-remover|remove-ai-label)/;
+const PLANNED = /href="\/(guides|remove-metadata-from-pdf|remove-metadata-from-video|ai-metadata-remover|remove-ai-label)/;
 
 for (const page of PAGES) {
   const html = readPage(page.file);
@@ -13,7 +13,7 @@ for (const page of PAGES) {
   check(`${page.id} internal links >= 3 (main)`, internal.length >= 3, `found=${internal.length}`);
   check(`${page.id} no planned route rendered`, !PLANNED.test(html));
   check(`${page.id} no planned route string in output`,
-    !/\/(examples|compare|guides|remove-metadata-from-pdf|remove-metadata-from-video|ai-metadata-remover|remove-ai-label)\//.test(html));
+    !/\/(guides|remove-metadata-from-pdf|remove-metadata-from-video|ai-metadata-remover|remove-ai-label)\//.test(html));
   if (page.id === 'photo') {
     check('photo has fixed Metadata Remover anchor', internal.some((link) => link.anchor === 'Metadata Remover' && link.href === '/'));
     const body = main.replace(/<script[\s\S]*?<\/script>/g, '');

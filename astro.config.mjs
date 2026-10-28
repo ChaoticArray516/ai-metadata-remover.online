@@ -11,8 +11,5 @@ export default defineConfig({
   image: {
     service: { entrypoint: 'astro/assets/services/noop' },
   },
-  prefetch: {
-    prefetchAll: false,
-    defaultStrategy: 'hover',
-  },
+  prefetch: false,
 });

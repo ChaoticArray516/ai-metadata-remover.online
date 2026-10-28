@@ -2,3 +2,7 @@
 # Enforce 301 trailing-slash canonical redirects (Pages default is 308).
 /pricing /pricing/ 301
 /remove-metadata-from-photo /remove-metadata-from-photo/ 301
+/examples /examples/ 301
+/compare/vs-aimetadatacleaner /compare/vs-aimetadatacleaner/ 301
+/compare/vs-deletefootprints /compare/vs-deletefootprints/ 301
+/compare/vs-exifremover /compare/vs-exifremover/ 301
